@@ -111,18 +111,15 @@ namespace Companies.Controllers
                 return NotFound();
             }
 
-            if (update.EmailAddress != null)
-            {
-                employee.Email = update.EmailAddress;
-            }
-            if (update.PhoneNumber != null)
-            {
-                employee.Phone = update.PhoneNumber;
-            }
-            if (update.Title != null)
-            {
+            if (update.EmailAddress != "")
+                if (new EmailAddressAttribute().IsValid(update.EmailAddress))
+                    employee.Email = update.EmailAddress;
+
+            if (update.Phone != "")
+                employee.Phone = update.Phone;
+
+            if (update.Title != "")
                 employee.Title = update.Title;
-            }
 
             database.SaveChanges();
 
