@@ -6,9 +6,9 @@ namespace Companies.Models.DTOs
 {
     public class UpdateEmployeeDTO
     {
-        public string EmailAddress { get; set; }
-        public string Phone { get; set; }
-        public string Title { get; set; }
+        public string? EmailAddress { get; set; }
+        public string? Phone { get; set; }
+        public string? Title { get; set; }
 
     }
 }

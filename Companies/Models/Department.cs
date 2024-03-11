@@ -1,10 +1,20 @@
-﻿namespace Companies.Models
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Companies.Models
 {
     public class Department
     {
-        public string IdCode { get; set; }
-        public Project MotherProject { get; set; }
-        public string Name { get; set; }
-        public int DirectorOfDepartmentID { get; set; }
+        [Key]
+        public required string IdCode { get; set; }
+        [Required]
+        public required string Name { get; set; }
+        [ForeignKey(nameof(DirectorOfNodeId))]
+        public int? DirectorOfNodeId { get; set; }
+        public Employee? DirectorOfNode { get; set; }
+        public const string type = "Department";
+        public required Project MotherProject { get; set; }
+        public required string MotherProjectId { get; set; }
     }
 }

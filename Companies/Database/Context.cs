@@ -9,11 +9,12 @@ namespace Companies.Database
         public Context(DbContextOptions<Context> options) : base(options)
         {}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Employee>().Property(n => n.Title).IsRequired(false);
-        }
+        
 
         public DbSet<Employee> employees { get; set; }
+        public DbSet<Company> companies { get; set; }
+        public DbSet<Division> divisions { get; set; }
+        public DbSet<Project> projects { get; set; }
+        public DbSet<Department> departments { get; set; }
     }
 }

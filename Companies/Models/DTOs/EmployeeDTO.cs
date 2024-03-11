@@ -4,16 +4,13 @@ namespace Companies.Models.DTOs
 {
     public class EmployeeDTO
     {
-        [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
         [EmailAddress]
-        [Required]
-        public string Email { get; set; }
+        public required string Email { get; set; }
         [Phone]
-        [Required]
-        public string Phone { get; set; }
-        public string Title { get; set; }
+        public required string Phone { get; set; }
+        public string? Title { get; set; }
+        public string? CompanyNodeID { get; set; }
     }
 }

@@ -113,7 +113,13 @@ namespace Companies.Controllers
 
             if (update.EmailAddress != "")
                 if (new EmailAddressAttribute().IsValid(update.EmailAddress))
+                {
                     employee.Email = update.EmailAddress;
+                }
+                else
+                {
+                    return BadRequest("Invalid e-mail adress!");
+                }
 
             if (update.Phone != "")
                 employee.Phone = update.Phone;
