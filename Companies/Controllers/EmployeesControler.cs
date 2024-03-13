@@ -18,12 +18,16 @@ namespace Companies.Controllers
             this.database = db;
         }
 
+
+        /// Method <c>GetEmployees</c> returns all employees.
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<EmployeeDTO>> GetEmployees()
         {
             return Ok(database.employees);
         }
 
+        /// Method <c>GetEmployees</c> returns employee with provided id.
         [HttpGet("{id}", Name = "GetEmployee")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,8 +49,9 @@ namespace Companies.Controllers
             return Ok(employee);
         }
 
+        /// Method <c>CreateEmployee</c> adds employees to database.
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<EmployeeDTO> CreateEmployee([FromBody] EmployeeDTO employeeDTO)
         {
@@ -67,9 +72,11 @@ namespace Companies.Controllers
             database.employees.Add(employee);
             database.SaveChanges();
 
-            return Ok();
+            return Ok(employee);
         }
 
+
+        /// Method <c>DeleteEmployee</c> deletes employee with provided id.
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -93,11 +100,11 @@ namespace Companies.Controllers
             return NoContent();
         }
 
-
-        [HttpPut("{id}")]
+        /// Method <c>UpdateEmployeePhone</c> updates phone number of employee with provided Id.
+        [HttpPut("UpdatePhone/{id}/{newPhone}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdateEmployee(int id, [FromBody] UpdateEmployeeDTO update)
+        public IActionResult UpdateEmployeePhone(int id, [Phone] string newPhone)
         {
             if (id <= 0)
             {
@@ -111,21 +118,59 @@ namespace Companies.Controllers
                 return NotFound();
             }
 
-            if (update.EmailAddress != "")
-                if (new EmailAddressAttribute().IsValid(update.EmailAddress))
-                {
-                    employee.Email = update.EmailAddress;
-                }
-                else
-                {
-                    return BadRequest("Invalid e-mail adress!");
-                }
+            
+            employee.Phone = newPhone;
 
-            if (update.Phone != "")
-                employee.Phone = update.Phone;
+            database.SaveChanges();
 
-            if (update.Title != "")
-                employee.Title = update.Title;
+            return NoContent();
+        }
+
+        /// Method <c>UpdateEmployeeEmail</c> updates phone number of employee with provided Id.
+        [HttpPut("UpdateEmail/{id}/{newEmail}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateEmployeeEmail(int id, [EmailAddress] string newEmail)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            var employee = database.employees.FirstOrDefault(n => n.Id == id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+
+            employee.Email = newEmail;
+
+            database.SaveChanges();
+
+            return NoContent();
+        }
+
+        [HttpPut("UpdateTitle/{id}/{newTitle}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateEmployee(int id, string newTitle)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            var employee = database.employees.FirstOrDefault(n => n.Id == id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+
+            employee.Title = newTitle;
 
             database.SaveChanges();
 
